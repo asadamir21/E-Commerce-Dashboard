@@ -1,13 +1,12 @@
 const {app,db} = require('./Setup')
-const {marketingRoutes, financeRoutes} = require('./Routes');
+const {SignInRoutes, marketingRoutes, financeRoutes} = require('./Routes');
 
+SignInRoutes(app, db);
 marketingRoutes(app, db);
 financeRoutes(app, db);
 
 db.on('error', (err) => {
     if (err){
         console.log('Connection with database was not made, Server stalled!');
-    } else {
-        console.log('Database successfully connected');
     }
 });

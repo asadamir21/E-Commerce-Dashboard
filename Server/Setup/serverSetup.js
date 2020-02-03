@@ -1,9 +1,14 @@
 const express = require('express');
 const path = require('path');
+var cors = require('cors');
 
 const {PORT} = require('../config.json');
-
 const app = express();
+app.use(cors())
+
+
+// Then use it before your routes are set up:
+app.use(cors());
 
 app.use('/', express.static(path.join(__dirname, '..','build')));
 app.use('/static', express.static(path.join(__dirname, '..','static')));
