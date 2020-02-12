@@ -1,9 +1,12 @@
 const {app,db} = require('./Setup')
-const {SignInRoutes, marketingRoutes, financeRoutes} = require('./Routes');
+const {SignInRoutes} = require('./Routes');
+const {appRoutes} = require('./Routes');
 
 SignInRoutes(app, db);
-marketingRoutes(app, db);
-financeRoutes(app, db);
+appRoutes(app, db);
+
+//marketingRoutes(app, db);
+//financeRoutes(app, db);
 
 db.on('error', (err) => {
     if (err){

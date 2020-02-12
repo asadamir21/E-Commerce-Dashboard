@@ -1,4 +1,9 @@
 import React from "react";
+import ReactDOM from "react-dom";
+import { Router, Route, Switch, Redirect} from "react-router-dom";
+import SignIn from "../../layouts/SignIn"
+import hist from "../../index"
+
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -18,6 +23,10 @@ import Search from "@material-ui/icons/Search";
 // core components
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
+
+//  core views
+//import UserProfile from "../../views/UserProfile/UserProfile.js"
+
 
 import styles from "assets/jss/material-dashboard-react/components/headerLinksStyle.js";
 
@@ -44,8 +53,28 @@ export default function AdminNavbarLinks() {
       setOpenProfile(event.currentTarget);
     }
   };
-  const handleCloseProfile = () => {
+  const handleLogout = () => {
     setOpenProfile(null);
+    ReactDOM.render(
+      <Router history={hist}>
+        <Switch>
+          <Route exact path="/SignIn" component={SignIn} />
+          <Redirect from="/" to="/SignIn" />
+        </Switch>
+      </Router>,
+      document.getElementById("root")
+    );
+  };
+  const handleClickUserProfile = () => {
+    setOpenProfile(null);
+    ReactDOM.render(
+      <Router history={hist}>
+        <Switch>
+          <Redirect to="/admin/user" />
+        </Switch>
+      </Router>,
+      document.getElementById("root")
+    );  
   };
   return (
     <div>
@@ -191,23 +220,17 @@ export default function AdminNavbarLinks() {
               }}
             >
               <Paper>
-                <ClickAwayListener onClickAway={handleCloseProfile}>
+                <ClickAwayListener onClickAway={handleCloseNotification}> 
                   <MenuList role="menu">
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={handleClickUserProfile}
                       className={classes.dropdownItem}
                     >
                       Profile
                     </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseProfile}
-                      className={classes.dropdownItem}
-                    >
-                      Settings
-                    </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={handleLogout}
                       className={classes.dropdownItem}
                     >
                       Logout

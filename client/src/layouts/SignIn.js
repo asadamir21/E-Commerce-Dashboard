@@ -1,4 +1,12 @@
-import React from 'react';
+import React,{useState} from "react";
+//import ReactDOM from "react-dom";
+//import { Router, Route, Switch, Redirect } from "react-router-dom";
+
+// core components
+//import Admin from "layouts/Admin.js";
+import hist from "../index";
+import "assets/css/material-dashboard-react.css?v=1.8.0";
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -14,14 +22,13 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
-const bcrypt = require('bcryptjs');
-//const passport = require('passport');
+const md5 = require('md5');
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
+      <Link color="inherit" href="https://github.com/asadamir21">
         Your Website
       </Link>{' '}
       {new Date().getFullYear()}
@@ -59,11 +66,18 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  alert: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
 }));
 
 const User = {
   UserID: '',
-  UserPassword: ''
+  UserPassword: '',
+  UserHashedPassword: ''
 }
 
 function handleUserIDChange(event) {
@@ -77,28 +91,49 @@ function handlePasswordChange(event) {
 function handleSubmit(event) {
   event.preventDefault();
 
-  
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(User.UserPassword, salt, (err, hash) => {
-      if (err) throw err;
-      User.UserPassword = hash; 
-    });
-  });
-  
-  axios.post(`http://localhost:7500/SignIn`, { User })
-    .then(res => {
-      console.log(res);
-    })
-    .catch(res => {
-      console.log(res);
-    });
+  if (User.UserID.length > 0 && User.UserPassword.length > 0){
+    User.UserHashedPassword = md5(User.UserPassword)
+    
+    axios.post(`http://localhost:7500/SignIn`, { User })  
+      .then(res => {
+        console.log(res)
+        //console.log(res.cookie())   
+        // if (res.data.rowCount > 0){
+        //   ReactDOM.render(
+        //     <Router history={hist}>
+        //       <Switch>
+        //         <Route path="/admin" component={Admin} />
+        //         <Redirect from="/SignIn" to="/admin/dashboard" />
+        //       </Switch>
+        //     </Router>,
+        //     document.getElementById("root")
+        //   );
+        // }
+        // else{
+        //   alert("Incorrect UserID or Password")
+        // }
+        //hist.push('/admin/dashboard')
+      })
+      .catch(res => {
+        //console.log(res);
+      });
+    }
+    else{
+      return(dispatch) => {
+        dispatch({
+          //type: ENTRY_ERROR_SET,
+          type: 106,
+          payload: "Don't leave fields empty!"
+        })
+      }
+    }
 }
-
 export default function SignInSide() {
   const classes = useStyles();
-
+  const [displayerror, setDisplayerror] = useState('')
   return (
     <Grid container component="main" className={classes.root}>
+      
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -130,7 +165,7 @@ export default function SignInSide() {
               name="password"
               label="Password"
               type="password"
-              id="password"sss
+              id="password"
               autoComplete="current-password"
               onChange={handlePasswordChange}
             />
@@ -146,8 +181,9 @@ export default function SignInSide() {
               className={classes.submit}
               onClick={handleSubmit}
             >
-              Sign In
+             Sign In
             </Button>
+            {displayerror}
             <Box mt={5}>
               <Copyright />
             </Box>
