@@ -20,6 +20,7 @@ export default function CustomInput(props) {
     formControlProps,
     labelText,
     id,
+    fieldvalue,
     labelProps,
     inputProps,
     error,
@@ -58,7 +59,10 @@ export default function CustomInput(props) {
           disabled: classes.disabled,
           underline: underlineClasses
         }}
+        value={fieldvalue}
         id={id}
+        disabled={true}
+        readOnly={true}
         {...inputProps}
       />
       {error ? (

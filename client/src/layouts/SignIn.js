@@ -1,9 +1,9 @@
-import React,{useState} from "react";
-//import ReactDOM from "react-dom";
-//import { Router, Route, Switch, Redirect } from "react-router-dom";
-
+import React from "react";
+import ReactDOM from "react-dom";
+import { Router, Route, Switch, Redirect } from "react-router-dom";
+//import {useAlert} from 'react-alert';
 // core components
-//import Admin from "layouts/Admin.js";
+import Admin from "layouts/Admin.js";
 import hist from "../index";
 import "assets/css/material-dashboard-react.css?v=1.8.0";
 
@@ -90,35 +90,33 @@ function handlePasswordChange(event) {
 
 function handleSubmit(event) {
   event.preventDefault();
+//  const alert = useAlert()
 
   if (User.UserID.length > 0 && User.UserPassword.length > 0){
     User.UserHashedPassword = md5(User.UserPassword)
     
     axios.post(`http://localhost:7500/SignIn`, { User })  
       .then(res => {
-        console.log(res)
-        //console.log(res.cookie())   
-        // if (res.data.rowCount > 0){
-        //   ReactDOM.render(
-        //     <Router history={hist}>
-        //       <Switch>
-        //         <Route path="/admin" component={Admin} />
-        //         <Redirect from="/SignIn" to="/admin/dashboard" />
-        //       </Switch>
-        //     </Router>,
-        //     document.getElementById("root")
-        //   );
-        // }
-        // else{
-        //   alert("Incorrect UserID or Password")
-        // }
-        //hist.push('/admin/dashboard')
+        ReactDOM.render(
+          <Router history={hist}>
+            <Switch>
+              <Route path="/admin" component={Admin} />
+              <Redirect from="/SignIn" to="/admin/dashboard" />
+            </Switch>
+          </Router>,  
+          document.getElementById("root")
+         );
+        hist.push('/admin/dashboard')
       })
-      .catch(res => {
-        //console.log(res);
+      .catch(res => {      
+        console.log(res);
       });
     }
     else{
+      // alert.error("Don't leave fields empty!", {
+      //   timeout: 2000
+      // })
+       
       return(dispatch) => {
         dispatch({
           //type: ENTRY_ERROR_SET,
@@ -130,10 +128,9 @@ function handleSubmit(event) {
 }
 export default function SignInSide() {
   const classes = useStyles();
-  const [displayerror, setDisplayerror] = useState('')
+  //const [displayerror, setDisplayerror] = useState('')
   return (
     <Grid container component="main" className={classes.root}>
-      
       <CssBaseline />
       <Grid item xs={false} sm={4} md={7} className={classes.image} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
@@ -183,7 +180,8 @@ export default function SignInSide() {
             >
              Sign In
             </Button>
-            {displayerror}
+            {//displayerror
+            }
             <Box mt={5}>
               <Copyright />
             </Box>

@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Router, Route, Switch, Redirect} from "react-router-dom";
+import {Router, Redirect, Switch} from "react-router-dom";
 import SignIn from "../../layouts/SignIn"
 import hist from "../../index"
+import axios from 'axios';
 
 import classNames from "classnames";
 // @material-ui/core components
@@ -55,15 +56,19 @@ export default function AdminNavbarLinks() {
   };
   const handleLogout = () => {
     setOpenProfile(null);
-    ReactDOM.render(
-      <Router history={hist}>
-        <Switch>
-          <Route exact path="/SignIn" component={SignIn} />
-          <Redirect from="/" to="/SignIn" />
-        </Switch>
-      </Router>,
-      document.getElementById("root")
-    );
+    axios.get(`http://localhost:7500/logout`)  
+      .then(res => {
+        if (res.data === "logout successfully" && res.status === 200){
+          ReactDOM.render(
+            
+            <SignIn/>
+            ,document.getElementById("root")
+          );
+        }
+      })
+      .catch(res => {
+        console.log(res);
+      });
   };
   const handleClickUserProfile = () => {
     setOpenProfile(null);

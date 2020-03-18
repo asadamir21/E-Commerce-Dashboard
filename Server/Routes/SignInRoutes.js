@@ -43,10 +43,6 @@ authEntryHelper = (LoginID, db, login=true, body=null) => {
 
 
 module.exports = (app, db) => {
-
-   
- 
-
     app.post('/SignIn', (req, res) => {
         const validation = loginSchema.validate(req.body.User);
         if (validation.error !== null){
@@ -65,9 +61,8 @@ module.exports = (app, db) => {
     })
 
     app.get('/getMe', (req,res) => {
-        // console.log(req.cookies.)
         const data = jwt_util.verify(req.cookies.sessionToken)
-        console.log(data)
-        res.send()
+        //console.log(data)
+        res.send(data)
     })
 }

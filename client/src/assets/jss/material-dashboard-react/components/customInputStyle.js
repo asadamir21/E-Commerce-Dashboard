@@ -64,7 +64,7 @@ const customInputStyle = {
     margin: "27px 0 0 0",
     position: "relative",
     verticalAlign: "unset"
-  }
+  },
 };
 
 export default customInputStyle;
