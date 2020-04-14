@@ -180,8 +180,6 @@ export default function SignInSide() {
             >
              Sign In
             </Button>
-            {//displayerror
-            }
             <Box mt={5}>
               <Copyright />
             </Box>
