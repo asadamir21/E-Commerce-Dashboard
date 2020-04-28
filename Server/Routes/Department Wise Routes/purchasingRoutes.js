@@ -11,8 +11,10 @@ module.exports = (app, db) => {
             GROUP BY Name order by count(*) desc, Name
             `, db)
             .then(x => {
-        x.headers = ["Vendor Name", "No. of Orders"]
-            res.send(JSON.stringify(x))
+                x.headers = ["Vendor Name", "No. of Orders"]
+                x.tabletitle = "Top Vendors"
+                x.subTitle = "Purchasing"
+                res.send(JSON.stringify(x))
         })
         .catch(x => console.log(x))
     })
@@ -31,8 +33,10 @@ module.exports = (app, db) => {
              order by DATENAME(year, OrderDate) desc, Name
              `, db)
             .then(x => {
-        x.headers = ["Year", "Product Name", "Purchased Qunatity", "Order Value"]
-            res.send(JSON.stringify(x))
+                x.headers = ["Year", "Product Name", "Purchased Qunatity", "Order Value"]
+                x.tabletitle = "Yearly Product Purchases"
+                x.subTitle = "Purchasing"
+                res.send(JSON.stringify(x))
         })
         .catch(x => console.log(x))
     })
@@ -50,8 +54,10 @@ module.exports = (app, db) => {
             order by sum(OrderQty) desc
             `, db)
             .then(x => {
-        x.headers = ["Product Name", "Purchased Qunatity", "Order Value"]
-            res.send(JSON.stringify(x))
+                x.headers = ["Product Name", "Purchased Qunatity", "Order Value"]
+                x.tabletitle = "Top Product Purchase"
+                x.subTitle = "Purchasing"
+                res.send(JSON.stringify(x))
         })
         .catch(x => console.log(x))
     })
@@ -71,8 +77,10 @@ module.exports = (app, db) => {
             order by [Dashboard].[Production].[Product].Name
             `, db)
             .then(x => {
-        x.headers = ["Product Name", "Best Vendor", "No. of Orders"]
-            res.send(JSON.stringify(x))
+                x.headers = ["Product Name", "Best Vendor", "No. of Orders"]
+                x.tabletitle = "Best_Vendor"
+                x.subTitle = "Purchasing"                
+                res.send(JSON.stringify(x))
         })
         .catch(x => console.log(x))
     })

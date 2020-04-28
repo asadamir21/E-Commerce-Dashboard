@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, {useState, useEffect } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 //import InputLabel from "@material-ui/core/InputLabel";
@@ -37,48 +37,61 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default class UserProfile extends Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-      Profile: '',
-    }
-  }
+export default function UserProfile () {
+  const classes = useStyles();
+
   
-  componentDidMount(){
+  const [profile, setProfile] = useState(null)
+  const [image, setImage] = useState([])
+  const [quote, setQuote] = useState([])
+
+  useEffect(() => {
     axios.post(`http://localhost:7500/UserProfile`)  
     .then(res => {
-      this.setState({
-        Profile: res.data.UserProfile 
-      });
+      setProfile(res.data.UserProfile)
+      var binary = '';
+      var bytes = [].slice.call(new Uint8Array(res.data.UserProfile.Image.data));
+      bytes.forEach((b) => binary += String.fromCharCode(b));
+      setImage(window.btoa(binary));  
+
+      axios.get(`https://type.fit/api/quotes`)  
+      .then(res => {
+        setQuote(res.data);              
+      })
     })
+  }, [])
+
+  var randomquote;
+
+  try{
+    randomquote = quote[Math.floor(Math.random() * quote.length)]['text']
+  } 
+  catch(err){
+
   }
-  
-      //   var binary = '';
-    //   var bytes = [].slice.call(new Uint8Array(this.state.Profile.Image.data));
-    //   bytes.forEach((b) => binary += String.fromCharCode(b));
-    //   this.state.Profile.Image = window.btoa(binary);  
-  
-  render(){
-    return (
-      <div>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={8}>
-            <Card>
-              <CardHeader color="primary">
-                {/* <h4 className={classes.cardTitleWhite}>User Profile</h4>
-                <p className={classes.cardCategoryWhite}>View your profile</p> */}
-              </CardHeader>
-              <CardBody>
-                <GridContainer>
-                  <GridItem xs={12} sm={12} md={5}>
-                    <CustomInput
+
+
+  if (profile == null){
+    return null;
+  } else {
+    return (<div>
+         <GridContainer>
+           <GridItem xs={12} sm={12} md={8}>
+             <Card>
+               <CardHeader color="primary">
+                 <h4 className={classes.cardTitleWhite}>User Profile</h4>
+                 <p className={classes.cardCategoryWhite}>View your profile</p>
+               </CardHeader>
+               <CardBody>
+                 <GridContainer>
+                   <GridItem xs={12} sm={12} md={5}>
+                      <CustomInput
                       labelText="Login ID"
                       id="loginid-disabled"
                       formControlProps={{
                         fullWidth: true
                       }}
-                      fieldvalue={this.state.Profile.LoginID}
+                      fieldvalue={profile.LoginID}
                       inputProps={{
                         style: {
                           fontSize: 16,
@@ -94,7 +107,7 @@ export default class UserProfile extends Component{
                       formControlProps={{
                         fullWidth: true,
                       }}
-                      fieldvalue={this.state.Profile.Name}
+                      fieldvalue={profile.Name}
                       inputProps={{
                         style: {
                           fontSize: 16,
@@ -112,7 +125,7 @@ export default class UserProfile extends Component{
                       formControlProps={{
                         fullWidth: true
                       }}
-                      fieldvalue={this.state.Profile.JobTitle}
+                      fieldvalue={profile.JobTitle}
                       inputProps={{
                         style: {
                           fontSize: 16,
@@ -128,7 +141,7 @@ export default class UserProfile extends Component{
                       formControlProps={{
                         fullWidth: true
                       }}
-                      fieldvalue={(this.state.Profile.MaritalStatus === "S") ? "Single" : "Married" }
+                      fieldvalue={(profile.MaritalStatus === "S") ? "Single" : "Married" }
                       inputProps={{
                         style: {
                           fontSize: 16,
@@ -146,7 +159,7 @@ export default class UserProfile extends Component{
                       formControlProps={{
                         fullWidth: true
                       }}
-                      fieldvalue={moment.utc(this.state.Profile.HireDate).format('MM/DD/YYYY')}
+                      fieldvalue={moment.utc(profile.HireDate).format('MM/DD/YYYY')}
                       inputProps={{
                         style: {
                           fontSize: 16,
@@ -162,7 +175,7 @@ export default class UserProfile extends Component{
                       formControlProps={{
                         fullWidth: true
                       }}
-                      fieldvalue={(this.state.Profile.Gender === "M") ? "Male" : "Female" }
+                      fieldvalue={(profile.Gender === "M") ? "Male" : "Female" }
                       inputProps={{
                         style: {
                           fontSize: 16,
@@ -180,7 +193,7 @@ export default class UserProfile extends Component{
                       formControlProps={{
                         fullWidth: true
                       }}
-                      fieldvalue={moment.utc(this.state.Profile.BirthDate).format('MM/DD/YYYY')}
+                      fieldvalue={moment.utc(profile.BirthDate).format('MM/DD/YYYY')}
                       inputProps={{
                         style: {
                           fontSize: 16,
@@ -193,7 +206,7 @@ export default class UserProfile extends Component{
                     <CustomInput
                       labelText="Organization Level"
                       id="organization-level"
-                      fieldvalue={(this.state.Profile.OrganizationLevel)}
+                      fieldvalue={(profile.OrganizationLevel)}
                       formControlProps={{
                         fullWidth: true
                       }}
@@ -211,7 +224,7 @@ export default class UserProfile extends Component{
                     <CustomInput
                       labelText="Salaried Flag"
                       id="Salaried-Flag"
-                      fieldvalue={(this.state.Profile.SalariedFlag) ? "Yes" : "No"}
+                      fieldvalue={(profile.SalariedFlag) ? "Yes" : "No"}
                       formControlProps={{
                         fullWidth: true
                       }}
@@ -227,7 +240,7 @@ export default class UserProfile extends Component{
                     <CustomInput
                       labelText="Vacation Hours"
                       id="Vacation-Hours"
-                      fieldvalue={this.state.Profile.VacationHours}
+                      fieldvalue={profile.VacationHours}
                       formControlProps={{
                         fullWidth: true
                       }}
@@ -243,7 +256,7 @@ export default class UserProfile extends Component{
                     <CustomInput
                       labelText="Sick Leave Hours"
                       id="Sick-Leave-Hours"
-                      fieldvalue={this.state.Profile.SickLeaveHours}
+                      fieldvalue={profile.SickLeaveHours}
                       formControlProps={{
                         fullWidth: true
                       }}
@@ -263,23 +276,21 @@ export default class UserProfile extends Component{
             <Card profile>
               <CardAvatar profile>
                 <a href="#pablo" onClick={e => e.preventDefault()}>
-                  {/* <img src={'data:image/jpeg;base64,'+this.state.Profile.Image} alt="..." />
-                 */}
+                  <img src={'data:image/jpeg;base64,'+image} alt="..." />
+                
                 </a>
               </CardAvatar>
               <CardBody profile>
-                {/* <h6 className={this.state.classes.cardCategory}>{this.state.Profile.JobTitle}</h6>
-                <h4 className={this.state.classes.cardTitle}>{this.state.Profile.LoginID}</h4>
-                <p className={this.state.classes.description}>
-                  Don't be scared of the truth because we need to restart the
-                  human foundation in truth And I love you like Kanye loves Kanye
-                  I love Rick Owens’ bed design but the back is...
-                </p> */}
+                <h6 className={classes.cardCategory}>{profile.JobTitle}</h6>
+                <h4 className={classes.cardTitle}>{profile.LoginID}</h4>
+                <p className={classes.description}>
+                  {randomquote}      
+                </p>
               </CardBody>
             </Card>
           </GridItem>
         </GridContainer>
-      </div>
-    );    
-  }
+      </div>)
+    }
 }
+

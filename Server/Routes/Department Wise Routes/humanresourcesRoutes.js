@@ -14,10 +14,12 @@ module.exports = (app, db) => {
             EndDate is NULL
             group by Name order by count(*) desc`, db)
             .then(x => {
-        x.headers = ["Department Name", "No. of Employee"]
-            res.send(JSON.stringify(x))
-        })
-        .catch(x => console.log(x))
+                x.headers = ["Department Name", "No. of Employee"]
+                x.tabletitle = "Employee in Each Department"
+                x.subTitle = "Human Resources"
+                res.send(JSON.stringify(x))
+            })
+            .catch(x => console.log(x))
     })
 
     // Shift Wise Employees 
@@ -29,20 +31,10 @@ module.exports = (app, db) => {
             [Dashboard].[HumanResources].[Shift].ShiftID = [Dashboard].[HumanResources].[EmployeeDepartmentHistory].ShiftID
             group by Name order by count(*) desc`, db)
             .then(x => {
-        x.headers = ["Shift Name", "No. of Employee"]
-            res.send(JSON.stringify(x))
-        })
-        .catch(x => console.log(x))
-    })
-
-    // Job Candidate 
-    app.get('/Human_Resource/Job_Canditate', (req,res) => {
-        dbx(`SELECT JobCandidateID, Resume FROM [Dashboard].[HumanResources].[JobCandidate]
-            where BusinessEntityID is NULL
-            `, db)
-            .then(x => {
-        x.headers = ["Job Candidate ID", "Resume"]
-            res.send(JSON.stringify(x))
+                x.headers = ["Shift Name", "No. of Employee"]
+                x.tabletitle = "Employee in Each Shift"
+                x.subTitle = "Human Resources"
+                res.send(JSON.stringify(x))
         })
         .catch(x => console.log(x))
     })

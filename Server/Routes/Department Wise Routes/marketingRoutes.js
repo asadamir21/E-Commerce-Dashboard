@@ -7,8 +7,10 @@ module.exports = (app, db) => {
              FROM [Dashboard].[Sales].[SalesOrderHeader]
              group by DATENAME(month, OrderDate)
              order by sum(TotalDue) desc`, db)
-            .then(x => {
-        x.headers = ["Month", "No. of Orders", "Total Amount"]
+        .then(x => {
+            x.headers = ["Month", "No. of Orders", "Total Amount"]
+            x.tabletitle = "Month Wise Sales"
+            x.subTitle = "Sales & Marketing"
             res.send(JSON.stringify(x))
         })
         .catch(x => console.log(x))
@@ -21,8 +23,10 @@ module.exports = (app, db) => {
             group by DATENAME(year, OrderDate)
             `, db)
             .then(x => {
-        x.headers = ["Year", "Total Revenue"]
-            res.send(JSON.stringify(x))
+                x.headers = ["Year", "Total Revenue"]
+                x.tabletitle = "Yearly Revenue"
+                x.subTitle = "Sales & Marketing"
+                res.send(JSON.stringify(x))
         })
         .catch(x => console.log(x))
     })
@@ -36,7 +40,7 @@ module.exports = (app, db) => {
             FROM [Dashboard].[Sales].[SalesOrderHeader]
             `, db)
             .then(x => {
-            res.send(JSON.stringify(x))
+                res.send(JSON.stringify(x))
         })
         .catch(x => console.log(x))
     })
@@ -52,8 +56,10 @@ module.exports = (app, db) => {
             order by sum(LineTotal) desc
             `, db)
             .then(x => {
-        x.headers = ["Product Name", "Total Quantity Ordered", "Order Value"]
-            res.send(JSON.stringify(x))
+                x.headers = ["Product Name", "Total Quantity Ordered", "Order Value"]
+                x.tabletitle = "Product Wise Sales"
+                x.subTitle = "Sales & Marketing"
+                res.send(JSON.stringify(x))
         })
         .catch(x => console.log(x))
     })
@@ -73,8 +79,10 @@ module.exports = (app, db) => {
             order by Name
             `, db)
             .then(x => {
-            x.headers = ["Product Name", "Total Orders", "Unit Price", "Order Value", "Discount Type"]
-            res.send(JSON.stringify(x))
+                x.headers = ["Product Name", "Total Orders", "Unit Price", "Order Value", "Discount Type"]
+                x.tabletitle = "Product Sales Discount"
+                x.subTitle = "Sales & Marketing"
+                res.send(JSON.stringify(x))
         })
         .catch(x => console.log(x))
     })
@@ -88,8 +96,8 @@ module.exports = (app, db) => {
             FROM [Dashboard].[Sales].[SalesOrderDetail]
             `, db)
             .then(x => {
-            x.headers = ["Without Discount Orders", "With Discount Orders", "Total Orders"]
-            res.send(JSON.stringify(x))
+                x.headers = ["Without Discount Orders", "With Discount Orders", "Total Orders"]
+                res.send(JSON.stringify(x))
         })
         .catch(x => console.log(x))
     })    
