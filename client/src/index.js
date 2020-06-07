@@ -10,12 +10,6 @@ import SignIn from "layouts/SignIn.js";
 const hist = createBrowserHistory();
 
 ReactDOM.render(
-  // <Router history={hist}>
-  //   <Switch>
-  //     <Route path="/SignIn" component={SignIn} />
-  //     <Redirect from="/" to="/SignIn" />
-  //   </Switch>
-  // </Router>
   <SignIn/>,
   document.getElementById("root")
 );

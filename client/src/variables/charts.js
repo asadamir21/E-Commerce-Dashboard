@@ -33,6 +33,7 @@ const dailySalesChart = {
       left: 0
     }
   },
+  
   // for animation
   animation: {
     draw: function(data) {
@@ -130,9 +131,9 @@ const emailsSubscriptionChart = {
   }
 };
 
-// ##############################
-// // // Completed Tasks
-// #############################
+// // ##############################
+// // // // Completed Tasks
+// // #############################
 
 const completedTasksChart = {
   data: {

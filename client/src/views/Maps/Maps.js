@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   withScriptjs,
   withGoogleMap,
@@ -6,11 +7,12 @@ import {
   Marker
 } from "react-google-maps";
 
+
 const CustomSkinMap = withScriptjs(
   withGoogleMap(() => (
     <GoogleMap
-      defaultZoom={5}
-      defaultCenter={{ lat: 40.748817, lng: -73.985428 }}
+      defaultZoom={2}
+      defaultCenter={{ lat: 0, lng: 0 }}
       defaultOptions={{
         scrollwheel: false,
         zoomControl: true,
@@ -76,8 +78,10 @@ const CustomSkinMap = withScriptjs(
         ]
       }}
     >
+      
       <Marker position={{ lat: 40.748817, lng: -73.985428 }}/>
       <Marker position={{ lat: 24.8607, lng: 67.0011 }}/>
+
     </GoogleMap>
   ))
 );
@@ -88,7 +92,7 @@ export default function Maps() {
       googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOdH7YVCvu5sqe1ARMQ7AuaZFuTPJ5XD0"
       loadingElement={<div style={{ height: `100%` }} />}
       containerElement={<div style={{ height: `100vh` }} />}
-      mapElement={<div style={{ height: `100%` }} />}
+      mapElement={<div style={{ height: `100%` }} />}      
     />
   );
 }

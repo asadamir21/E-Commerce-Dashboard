@@ -6,7 +6,6 @@ SignInRoutes(app, db);
 const {appRoutes} = require('./Routes');
 appRoutes(app, db);
 
-
 // User Profile Routes
 const {UserProfileRoutes} = require('./Routes');
 UserProfileRoutes(app,db);
