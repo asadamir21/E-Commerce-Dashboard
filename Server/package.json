@@ -21,7 +21,7 @@
     "mssql": "^6.0.1",
     "node-open-geocoder": "^4.0.1",
     "passport": "^0.4.1",
-    "redis": "^2.8.0",
+    "redis": "^3.1.1",
     "tedious": "^6.7.0",
     "tedious-connection-pool": "^1.0.5"
   }
